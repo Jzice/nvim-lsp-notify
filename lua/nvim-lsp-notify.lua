@@ -132,8 +132,9 @@ local function format_message(message, percentage)
     return (percentage and percentage .. "%\t" or "") .. (message or "")
 end
 
-local function setup_lsp_notify_status()
-    vim.lsp.handlers["$/progress"] = function(_, result, ctx)
+--local function setup_lsp_notify_status()
+    -- vim.lsp.handlers["$/progress"] = function(_, result, ctx)
+     local function on_progress2(_, result, ctx)
         local client_id = ctx.client_id
 
         local val = result.value
@@ -172,16 +173,15 @@ local function setup_lsp_notify_status()
             notif_data.spinner = nil
         end
     end
-end
 
 function M.setup(opts)
 	options = vim.tbl_deep_extend('force', options, opts or {})
 
 	if not is_installed() then
-		vim.lsp.handlers['$/progress'] = on_progress
+		vim.lsp.handlers['$/progress'] = on_progress2
 	end
 
-	setup_lsp_notify_status()
+	--setup_lsp_notify_status()
 end
 
 return M
