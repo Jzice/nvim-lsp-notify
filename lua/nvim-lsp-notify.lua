@@ -32,7 +32,7 @@ local function show_notification(key, title, message, level)
 	local new_notification = vim.notify(message, level, {
 		title = title
 	})
-	if new_notification ~= nil then 
+	if new_notification ~= nil then
 		notifications[key] = new_notification
 	end
 end
@@ -46,7 +46,7 @@ local function on_progress2(err, msg, info)
 		show_notification(key, lsp_name, format_err(err), vim.log.levels.ERROR)
 		return
 	end
-	
+
 	if options.debug then
 		show_notification(key, lsp_name, vim.inspect(msg), vim.log.levels.DEBUG)
 		show_notification(key, lsp_name, vim.inspect(info), vim.log.levels.DEBUG)
@@ -58,7 +58,7 @@ local function on_progress2(err, msg, info)
 	if not task then
 		return
 	end
-	
+
 	if value.kind == 'begin' then
 		local message = nil
 		if value.title then
@@ -76,7 +76,7 @@ local function on_progress2(err, msg, info)
 		show_notification(key, lsp_name, message, vim.log.levels.INFO)
 	elseif value.kind == 'end' then
 		show_notification(key, lsp_name, value.message or options.messages.finish, vim.log.levels.INFO)
-	else	
+	else
 		if value.done then
 			show_notification(key, lsp_name, value.message or options.messages.finish, vim.log.levels.INFO)
 		else
@@ -132,8 +132,6 @@ local function format_message(message, percentage)
     return (percentage and percentage .. "%\t" or "") .. (message or "")
 end
 
---local function setup_lsp_notify_status()
-    -- vim.lsp.handlers["$/progress"] = function(_, result, ctx)
 local function on_progress(_, result, ctx)
     local client_id = ctx.client_id
 
@@ -181,7 +179,6 @@ function M.setup(opts)
 		vim.lsp.handlers['$/progress'] = on_progress
 	end
 
-	--setup_lsp_notify_status()
 end
 
 return M
